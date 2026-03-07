@@ -1,0 +1,128 @@
+{{ define "admin_message_view.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} – Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold:#b8860b;--gold-light:#d4a017;--deep:#1a1a2e;--sidebar-w:260px;--border:#e8e2d5;--muted:#7a7a7a; }
+        * { margin:0;padding:0;box-sizing:border-box; }
+        body { font-family:'Lato',sans-serif;background:#f4f4f8;color:#2d2d2d;display:flex;min-height:100vh; }
+        .sidebar { width:var(--sidebar-w);background:var(--deep);color:white;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:200;overflow-y:auto; }
+        .sidebar-brand { padding:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);text-align:center; }
+        .sidebar-brand .cross { font-size:1.8rem;color:var(--gold); }
+        .sidebar-brand h2 { font-family:'Playfair Display',serif;font-size:1rem;margin-top:0.3rem; }
+        .sidebar-brand span { font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase; }
+        .sidebar-nav { flex:1;padding:1rem 0; }
+        .nav-section { padding:0.5rem 1.2rem;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:0.5rem; }
+        .sidebar-link { display:flex;align-items:center;gap:0.8rem;padding:0.75rem 1.5rem;color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.9rem;transition:all 0.2s;border-left:3px solid transparent; }
+        .sidebar-link:hover { color:white;background:rgba(255,255,255,0.06); }
+        .sidebar-link.active { color:var(--gold-light);background:rgba(184,134,11,0.1);border-left-color:var(--gold); }
+        .sidebar-link .icon { font-size:1rem;width:20px;text-align:center; }
+        .sidebar-footer { padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.8rem;color:rgba(255,255,255,0.4); }
+        .sidebar-footer a { color:rgba(255,255,255,0.5);text-decoration:none;display:block;margin-top:0.3rem; }
+        .sidebar-footer a:hover { color:var(--gold-light); }
+        .main-content { margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column; }
+        .topbar { background:white;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100; }
+        .topbar h1 { font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--deep); }
+        .topbar-right { display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted); }
+        .topbar-right a { color:var(--muted);text-decoration:none;transition:color 0.2s; }
+        .topbar-right a:hover { color:var(--gold); }
+        .page-content { padding:2rem;flex:1; }
+        .card { background:white;border:1px solid var(--border);border-radius:4px; }
+        .card-header { padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between; }
+        .card-header h3 { font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--deep); }
+        .card-body { padding:1.5rem; }
+        .btn { display:inline-block;padding:0.6rem 1.4rem;border-radius:2px;font-family:'Lato',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border:2px solid transparent;cursor:pointer; }
+        .btn-outline { background:transparent;color:var(--gold);border-color:var(--gold); }
+        .btn-outline:hover { background:var(--gold);color:white; }
+        .btn-danger { background:#e53e3e;color:white;border-color:#e53e3e; }
+        .btn-danger:hover { background:#c53030;border-color:#c53030; }
+        .badge { display:inline-block;padding:0.2rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase; }
+        .badge-green { background:rgba(56,161,105,0.15);color:#276749; }
+        .badge-gray { background:#f0f0f0;color:#666; }
+    </style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="cross">✝</div>
+        <h2>Holy Trinity</h2>
+        <span>Admin Panel</span>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section">Main</div>
+        <a href="/admin/dashboard" class="sidebar-link {{ if eq .activePage "dashboard" }}active{{ end }}"><span class="icon">📊</span> Dashboard</a>
+        <div class="nav-section">Content</div>
+        <a href="/admin/announcements" class="sidebar-link {{ if eq .activePage "announcements" }}active{{ end }}"><span class="icon">📋</span> Announcements</a>
+        <a href="/admin/events" class="sidebar-link {{ if eq .activePage "events" }}active{{ end }}"><span class="icon">📅</span> Events</a>
+        <a href="/admin/gallery" class="sidebar-link {{ if eq .activePage "gallery" }}active{{ end }}"><span class="icon">📷</span> Gallery</a>
+        <div class="nav-section">Communication</div>
+        <a href="/admin/messages" class="sidebar-link {{ if eq .activePage "messages" }}active{{ end }}"><span class="icon">✉️</span> Messages</a>
+        <div class="nav-section">Account</div>
+        <a href="/admin/profile" class="sidebar-link {{ if eq .activePage "profile" }}active{{ end }}"><span class="icon">👤</span> Profile</a>
+        <a href="/" class="sidebar-link" target="_blank"><span class="icon">🌐</span> View Website</a>
+    </nav>
+    <div class="sidebar-footer">
+        <div>Logged in as <strong>{{ .adminName }}</strong></div>
+        <a href="/admin/logout">Sign Out →</a>
+    </div>
+</aside>
+<div class="main-content">
+    <div class="topbar">
+        <h1>{{ .title }}</h1>
+        <div class="topbar-right">
+            <span>👋 {{ .adminName }}</span>
+            <a href="/admin/profile">Profile</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+    <div class="page-content">
+        <div style="max-width:650px;">
+            <a href="/admin/messages" style="color:var(--muted);text-decoration:none;font-size:0.85rem;">← Back to Messages</a>
+            <div class="card" style="margin-top:1rem;">
+                <div class="card-header">
+                    <h3>{{ .message.Subject }}</h3>
+                    <span class="badge badge-gray">Read</span>
+                </div>
+                <div class="card-body">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
+                        <div>
+                            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.2rem;">From</div>
+                            <div style="font-weight:600;">{{ .message.SenderName }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.2rem;">Email</div>
+                            <a href="mailto:{{ .message.Email }}" style="color:var(--gold);">{{ .message.Email }}</a>
+                        </div>
+                        {{ if .message.Phone }}
+                        <div>
+                            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.2rem;">Phone</div>
+                            <div>{{ .message.Phone }}</div>
+                        </div>
+                        {{ end }}
+                        <div>
+                            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.2rem;">Received</div>
+                            <div>{{ formatDate .message.CreatedAt }}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.8rem;">Message</div>
+                        <div style="background:#f9f9fc;border:1px solid var(--border);border-radius:4px;padding:1.2rem;line-height:1.7;white-space:pre-wrap;">{{ .message.Message }}</div>
+                    </div>
+                    <div style="margin-top:1.5rem;display:flex;gap:0.8rem;">
+                        <a href="mailto:{{ .message.Email }}?subject=Re: {{ .message.Subject }}" class="btn btn-outline">Reply via Email</a>
+                        <form method="POST" action="/admin/messages/{{ .message.ID }}/delete" onsubmit="return confirm('Delete this message?')">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{{ end }}

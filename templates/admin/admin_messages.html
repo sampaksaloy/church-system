@@ -1,0 +1,235 @@
+{{ define "admin_messages.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} – Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold:#b8860b;--gold-light:#d4a017;--deep:#1a1a2e;--sidebar-w:260px;--cream:#faf8f2;--border:#e8e2d5;--muted:#7a7a7a; }
+        * { margin:0;padding:0;box-sizing:border-box; }
+        body { font-family:'Lato',sans-serif;background:#f4f4f8;color:#2d2d2d;display:flex;min-height:100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--deep);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 200;
+            overflow-y: auto;
+        }
+        .sidebar-brand {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+        .sidebar-brand .cross { font-size: 1.8rem; color: var(--gold); }
+        .sidebar-brand h2 { font-family:'Playfair Display',serif;font-size:1rem;margin-top:0.3rem; }
+        .sidebar-brand span { font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase; }
+        .sidebar-nav { flex:1;padding:1rem 0; }
+        .nav-section { padding:0.5rem 1.2rem;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:0.5rem; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover { color:white;background:rgba(255,255,255,0.06); }
+        .sidebar-link.active { color:var(--gold-light);background:rgba(184,134,11,0.1);border-left-color:var(--gold); }
+        .sidebar-link .icon { font-size:1rem;width:20px;text-align:center; }
+        .sidebar-footer { padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,0.08);font-size:0.8rem;color:rgba(255,255,255,0.4); }
+        .sidebar-footer a { color:rgba(255,255,255,0.5);text-decoration:none;display:block;margin-top:0.3rem; }
+        .sidebar-footer a:hover { color:var(--gold-light); }
+
+        /* MAIN */
+        .main-content {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .topbar {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .topbar h1 { font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--deep); }
+        .topbar-right { display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--muted); }
+        .topbar-right a { color:var(--muted);text-decoration:none;transition:color 0.2s; }
+        .topbar-right a:hover { color:var(--gold); }
+        .page-content { padding:2rem;flex:1; }
+
+        /* CARDS */
+        .card { background:white;border:1px solid var(--border);border-radius:4px; }
+        .card-header { padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between; }
+        .card-header h3 { font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--deep); }
+        .card-body { padding:1.5rem; }
+
+        /* STAT CARDS */
+        .stats-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:2rem; }
+        .stat-card { background:white;border:1px solid var(--border);border-radius:4px;padding:1.5rem;display:flex;align-items:center;gap:1rem; }
+        .stat-icon { width:50px;height:50px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0; }
+        .stat-icon.gold { background:rgba(184,134,11,0.15); }
+        .stat-icon.blue { background:rgba(26,26,46,0.1); }
+        .stat-icon.green { background:rgba(56,161,105,0.1); }
+        .stat-icon.red { background:rgba(229,62,62,0.1); }
+        .stat-num { font-size:1.8rem;font-weight:700;color:var(--deep); }
+        .stat-label { font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px; }
+
+        /* TABLES */
+        .table { width:100%;border-collapse:collapse; }
+        .table th { padding:0.75rem 1rem;background:#f8f8fc;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);text-align:left;border-bottom:2px solid var(--border); }
+        .table td { padding:0.75rem 1rem;border-bottom:1px solid var(--border);font-size:0.9rem; }
+        .table tr:last-child td { border-bottom:none; }
+        .table tr:hover td { background:#f9f9fc; }
+
+        /* FORMS */
+        .form-group { margin-bottom:1.5rem; }
+        .form-label { display:block;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.4rem;color:var(--deep); }
+        .form-control { width:100%;padding:0.7rem 1rem;border:1px solid var(--border);border-radius:2px;font-family:'Lato',sans-serif;font-size:0.95rem;background:white;transition:border-color 0.2s; }
+        .form-control:focus { outline:none;border-color:var(--gold); }
+        textarea.form-control { resize:vertical;min-height:120px; }
+        select.form-control { cursor:pointer; }
+        .grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem; }
+        .form-check { display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.9rem; }
+        .form-check input { width:18px;height:18px;cursor:pointer;accent-color:var(--gold); }
+
+        /* BUTTONS */
+        .btn { display:inline-block;padding:0.6rem 1.4rem;border-radius:2px;font-family:'Lato',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border:2px solid transparent;cursor:pointer; }
+        .btn-gold { background:var(--gold);color:white;border-color:var(--gold); }
+        .btn-gold:hover { background:var(--gold-light);border-color:var(--gold-light); }
+        .btn-outline { background:transparent;color:var(--gold);border-color:var(--gold); }
+        .btn-outline:hover { background:var(--gold);color:white; }
+        .btn-danger { background:#e53e3e;color:white;border-color:#e53e3e; }
+        .btn-danger:hover { background:#c53030;border-color:#c53030; }
+        .btn-sm { padding:0.35rem 0.8rem;font-size:0.78rem; }
+
+        /* BADGES */
+        .badge { display:inline-block;padding:0.2rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase; }
+        .badge-gold { background:rgba(184,134,11,0.15);color:var(--gold); }
+        .badge-green { background:rgba(56,161,105,0.15);color:#276749; }
+        .badge-red { background:rgba(229,62,62,0.15);color:#c53030; }
+        .badge-gray { background:#f0f0f0;color:#666; }
+
+        /* ALERTS */
+        .alert { padding:0.9rem 1.2rem;border-radius:2px;margin-bottom:1.5rem;font-size:0.9rem; }
+        .alert-success { background:#f0fff4;border-left:4px solid #38a169;color:#276749; }
+        .alert-danger { background:#fff5f5;border-left:4px solid #e53e3e;color:#c53030; }
+
+        @media (max-width: 768px) {
+            .sidebar { transform:translateX(-100%);transition:transform 0.3s; }
+            .sidebar.open { transform:none; }
+            .main-content { margin-left:0; }
+            .stats-grid { grid-template-columns:repeat(2,1fr); }
+        }
+    </style>
+
+</head>
+<body>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="cross">✝</div>
+        <h2>Holy Trinity</h2>
+        <span>Admin Panel</span>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section">Main</div>
+        <a href="/admin/dashboard" class="sidebar-link {{ if eq .activePage "dashboard" }}active{{ end }}">
+            <span class="icon">📊</span> Dashboard
+        </a>
+        <div class="nav-section">Content</div>
+        <a href="/admin/announcements" class="sidebar-link {{ if eq .activePage "announcements" }}active{{ end }}">
+            <span class="icon">📋</span> Announcements
+        </a>
+        <a href="/admin/events" class="sidebar-link {{ if eq .activePage "events" }}active{{ end }}">
+            <span class="icon">📅</span> Events
+        </a>
+        <a href="/admin/gallery" class="sidebar-link {{ if eq .activePage "gallery" }}active{{ end }}">
+            <span class="icon">📷</span> Gallery
+        </a>
+        <div class="nav-section">Communication</div>
+        <a href="/admin/messages" class="sidebar-link {{ if eq .activePage "messages" }}active{{ end }}">
+            <span class="icon">✉️</span> Messages
+        </a>
+        <div class="nav-section">Account</div>
+        <a href="/admin/profile" class="sidebar-link {{ if eq .activePage "profile" }}active{{ end }}">
+            <span class="icon">👤</span> Profile
+        </a>
+        <a href="/" class="sidebar-link" target="_blank">
+            <span class="icon">🌐</span> View Website
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div>Logged in as <strong>{{ .adminName }}</strong></div>
+        <a href="/admin/logout">Sign Out →</a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-content">
+    <div class="topbar">
+        <h1>{{ .title }}</h1>
+        <div class="topbar-right">
+            <span>👋 {{ .adminName }}</span>
+            <a href="/admin/profile">Profile</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+    </div>
+    <div class="page-content">
+<div class="card">
+    <div class="card-header">
+        <h3>Contact Messages</h3>
+        <span style="font-size:0.85rem;color:var(--muted);">{{ len .messages }} total</span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="table">
+            <thead><tr><th>Sender</th><th>Email</th><th>Subject</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+                {{ range .messages }}
+                <tr style="{{ if not .IsRead }}background:rgba(184,134,11,0.04);{{ end }}">
+                    <td style="{{ if not .IsRead }}font-weight:700;{{ end }}">{{ .SenderName }}</td>
+                    <td style="color:var(--muted);font-size:0.85rem;">{{ .Email }}</td>
+                    <td>{{ truncate .Subject 40 }}</td>
+                    <td style="color:var(--muted);font-size:0.85rem;">{{ formatDate .CreatedAt }}</td>
+                    <td>{{ if .IsRead }}<span class="badge badge-gray">Read</span>{{ else }}<span class="badge badge-green">New</span>{{ end }}</td>
+                    <td>
+                        <div style="display:flex;gap:0.4rem;">
+                            <a href="/admin/messages/{{ .ID }}" class="btn btn-outline btn-sm">View</a>
+                            <form method="POST" action="/admin/messages/{{ .ID }}/delete" onsubmit="return confirm('Delete this message?')">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{ else }}
+                <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No messages yet.</td></tr>
+                {{ end }}
+            </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+</div>
+
+</body>
+</html>
+{{ end }}

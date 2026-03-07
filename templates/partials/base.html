@@ -1,0 +1,253 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} – Holy Trinity Church</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b8860b;
+            --gold-light: #d4a017;
+            --deep: #1a1a2e;
+            --cream: #faf8f2;
+            --text: #2d2d2d;
+            --muted: #7a7a7a;
+            --white: #ffffff;
+            --border: #e8e2d5;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--text); }
+
+        /* NAV */
+        nav {
+            background: var(--deep);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            padding: 1rem 0;
+        }
+        .nav-brand .cross { font-size: 1.6rem; color: var(--gold); }
+        .nav-brand .name { font-family: 'Playfair Display', serif; color: var(--white); font-size: 1.2rem; line-height: 1.2; }
+        .nav-brand .name span { display: block; font-size: 0.75rem; color: var(--gold-light); font-family: 'Lato', sans-serif; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 0; list-style: none; }
+        .nav-links a {
+            display: block;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 1.5rem 1.1rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            transition: color 0.2s, background 0.2s;
+            text-transform: uppercase;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--gold-light);
+            background: rgba(255,255,255,0.05);
+        }
+        .hamburger { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--deep); }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 1rem 2rem; }
+            .hamburger { display: block; }
+        }
+
+        /* HERO BANNER */
+        .page-hero {
+            background: linear-gradient(135deg, var(--deep) 0%, #16213e 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-hero::before {
+            content: '✝';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20rem;
+            color: rgba(255,255,255,0.03);
+            pointer-events: none;
+        }
+        .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .page-hero p { color: rgba(255,255,255,0.6); font-weight: 300; }
+        .gold-line { width: 60px; height: 3px; background: var(--gold); margin: 1rem auto 0; }
+
+        /* CONTAINER */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .section { padding: 4rem 0; }
+
+        /* CARDS */
+        .card {
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .card-body { padding: 1.5rem; }
+        .card-meta { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--deep); }
+        .card-text { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+        /* BADGES */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .badge-gold { background: rgba(184,134,11,0.15); color: var(--gold); border: 1px solid rgba(184,134,11,0.3); }
+        .badge-blue { background: rgba(26,26,46,0.1); color: var(--deep); border: 1px solid rgba(26,26,46,0.2); }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-block;
+            padding: 0.7rem 1.8rem;
+            border-radius: 2px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .btn-gold { background: var(--gold); color: white; border-color: var(--gold); }
+        .btn-gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
+        .btn-outline { background: transparent; color: var(--gold); border-color: var(--gold); }
+        .btn-outline:hover { background: var(--gold); color: white; }
+
+        /* SECTION HEADER */
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--deep); }
+        .section-header p { color: var(--muted); margin-top: 0.5rem; }
+        .section-header .gold-line { margin-top: 0.8rem; }
+
+        /* GRID */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        @media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+
+        /* PINNED */
+        .pinned-tag { color: var(--gold); font-size: 0.8rem; font-weight: 700; margin-right: 0.5rem; }
+
+        /* FORMS */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; color: var(--deep); }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            background: white;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--gold); }
+        textarea.form-control { resize: vertical; min-height: 120px; }
+
+        /* ALERTS */
+        .alert { padding: 1rem 1.5rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .alert-success { background: #f0fff4; border-left: 4px solid #38a169; color: #276749; }
+        .alert-danger { background: #fff5f5; border-left: 4px solid #e53e3e; color: #c53030; }
+
+        /* FOOTER */
+        footer {
+            background: var(--deep);
+            color: rgba(255,255,255,0.7);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: auto;
+        }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 2rem; }
+        .footer-brand .cross { font-size: 2rem; color: var(--gold); }
+        .footer-brand h3 { font-family: 'Playfair Display', serif; color: white; font-size: 1.2rem; margin: 0.5rem 0 0.3rem; }
+        .footer-brand p { font-size: 0.85rem; line-height: 1.7; }
+        .footer-col h4 { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.5rem; }
+        .footer-col a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-col a:hover { color: var(--gold-light); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; font-size: 0.8rem; }
+        @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+    </style>
+    {{ block "extra_styles" . }}{{ end }}
+</head>
+<body>
+<nav>
+    <a href="/" class="nav-brand">
+        <span class="cross">✝</span>
+        <div class="name">Holy Trinity Church<span>Serving God's People</span></div>
+    </a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+        <li><a href="/" class="{{ if eq .currentPage "home" }}active{{ end }}">Home</a></li>
+        <li><a href="/announcements" class="{{ if eq .currentPage "announcements" }}active{{ end }}">Announcements</a></li>
+        <li><a href="/events" class="{{ if eq .currentPage "events" }}active{{ end }}">Events</a></li>
+        <li><a href="/gallery" class="{{ if eq .currentPage "gallery" }}active{{ end }}">Gallery</a></li>
+        <li><a href="/contact" class="{{ if eq .currentPage "contact" }}active{{ end }}">Contact</a></li>
+        <li><a href="/admin/login">Admin ↗</a></li>
+    </ul>
+</nav>
+{{ block "content" . }}{{ end }}
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="cross">✝</div>
+                <h3>Holy Trinity Church</h3>
+                <p>A place of worship, community, and spiritual growth. Join us every Sunday as we come together in faith and fellowship.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/announcements">Announcements</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li>Sunday Mass: 8:00 AM</li>
+                    <li>Sunday Mass: 10:30 AM</li>
+                    <li>Weekday Mass: 6:00 AM</li>
+                    <li>Confession: Sat 4:00 PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{ .year }}  Holy Trinity Church. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{{ block "extra_scripts" . }}{{ end }}
+</body>
+</html>
+{{ end }}

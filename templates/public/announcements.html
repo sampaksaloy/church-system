@@ -1,0 +1,75 @@
+{{ define "announcements.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements – Holy Trinity Church</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--gold:#b8860b;--deep:#1a1a2e;--cream:#faf8f2;--border:#e8e2d5;--muted:#7a7a7a;}
+        *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Lato',sans-serif;background:var(--cream);}
+        nav{background:var(--deep);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+        .nb{display:flex;align-items:center;gap:0.8rem;text-decoration:none;padding:1rem 0;}
+        .nb .c{font-size:1.6rem;color:var(--gold);}.nb .n{font-family:'Playfair Display',serif;color:white;font-size:1.1rem;}
+        .nb .s{display:block;font-size:0.7rem;color:#d4a017;letter-spacing:2px;text-transform:uppercase;}
+        .nl{display:flex;list-style:none;}.nl a{color:rgba(255,255,255,0.8);text-decoration:none;padding:1.5rem 1rem;font-size:0.85rem;text-transform:uppercase;display:block;}
+        .nl a:hover,.nl a.active{color:#d4a017;}
+        .container{max-width:900px;margin:0 auto;padding:0 2rem;}
+        .hero{background:linear-gradient(135deg,var(--deep),#16213e);padding:4rem 2rem;text-align:center;color:white;}
+        .hero h1{font-family:'Playfair Display',serif;font-size:2.5rem;}.hero p{color:rgba(255,255,255,0.6);margin-top:0.5rem;}
+        .gold-line{width:60px;height:3px;background:var(--gold);margin:1rem auto 0;}
+        .section{padding:3rem 0;}
+        .badge{display:inline-block;padding:0.2rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
+        .badge-gold{background:rgba(184,134,11,0.15);color:var(--gold);}
+        .badge-blue{background:rgba(26,26,46,0.1);color:var(--deep);}
+        .card{background:white;border:1px solid var(--border);border-radius:4px;display:flex;margin-bottom:1.5rem;}
+        .card-body{padding:1.5rem;flex:1;}
+        footer{background:var(--deep);color:rgba(255,255,255,0.6);padding:2rem;text-align:center;}
+        @media(max-width:600px){.nl{display:none;}}
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="nb"><span class="c">✝</span><div class="n">Holy Trinity Church<span class="s">Serving God's People</span></div></a>
+    <ul class="nl">
+        <li><a href="/">Home</a></li><li><a href="/announcements" class="active">Announcements</a></li>
+        <li><a href="/events">Events</a></li><li><a href="/gallery">Gallery</a></li>
+        <li><a href="/contact">Contact</a></li><li><a href="/admin/login">Admin ↗</a></li>
+    </ul>
+</nav>
+<div class="hero"><h1>Announcements</h1><p>Stay updated with the latest news from our parish</p><div class="gold-line"></div></div>
+<section class="section"><div class="container">
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;">
+        <a href="/announcements" class="badge {{ if eq .category "" }}badge-gold{{ else }}badge-blue{{ end }}" style="padding:0.4rem 1rem;text-decoration:none;">All</a>
+        {{ range slice "General" "Mass Schedule" "Youth" "Choir" "Community" "Special" }}
+        <a href="/announcements?category={{ . }}" class="badge {{ if eq $.category . }}badge-gold{{ else }}badge-blue{{ end }}" style="padding:0.4rem 1rem;text-decoration:none;">{{ . }}</a>
+        {{ end }}
+    </div>
+    {{ if .announcements }}
+        {{ range .announcements }}
+        <div class="card">
+            <div style="width:6px;background:{{ if .IsPinned }}var(--gold){{ else }}var(--border){{ end }};flex-shrink:0;border-radius:4px 0 0 4px;"></div>
+            <div class="card-body">
+                <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;flex-wrap:wrap;">
+                    {{ if .IsPinned }}<span style="color:var(--gold);font-size:0.8rem;font-weight:700;">📌 Pinned</span>{{ end }}
+                    <span class="badge badge-gold">{{ .Category }}</span>
+                    <span style="font-size:0.8rem;color:var(--muted);margin-left:auto;">{{ formatDate .CreatedAt }}</span>
+                </div>
+                <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--deep);margin-bottom:0.5rem;">
+                    <a href="/announcements/{{ .ID }}" style="text-decoration:none;color:inherit;">{{ .Title }}</a>
+                </h2>
+                <p style="color:var(--muted);line-height:1.7;">{{ truncate .Content 200 }}</p>
+                <a href="/announcements/{{ .ID }}" style="display:inline-block;margin-top:0.8rem;color:var(--gold);font-weight:700;font-size:0.85rem;text-decoration:none;">Read more →</a>
+            </div>
+        </div>
+        {{ end }}
+    {{ else }}
+    <div style="text-align:center;padding:4rem;color:var(--muted);">
+        <div style="font-size:3rem;margin-bottom:1rem;">📋</div>
+        <p>No announcements found{{ if .category }} in "{{ .category }}"{{ end }}.</p>
+    </div>
+    {{ end }}
+</div></section>
+<footer>&copy; {{ .year }} Holy Trinity Church. All rights reserved.</footer>
+</body></html>
+{{ end }}

@@ -1,0 +1,91 @@
+{{ define "gallery.html" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery – Holy Trinity Church</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--gold:#b8860b;--deep:#1a1a2e;--cream:#faf8f2;--border:#e8e2d5;--muted:#7a7a7a;}
+        *{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Lato',sans-serif;background:var(--cream);}
+        nav{background:var(--deep);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+        .nb{display:flex;align-items:center;gap:0.8rem;text-decoration:none;padding:1rem 0;}
+        .nb .c{font-size:1.6rem;color:var(--gold);}.nb .n{font-family:'Playfair Display',serif;color:white;font-size:1.1rem;}
+        .nb .s{display:block;font-size:0.7rem;color:#d4a017;letter-spacing:2px;text-transform:uppercase;}
+        .nl{display:flex;list-style:none;}.nl a{color:rgba(255,255,255,0.8);text-decoration:none;padding:1.5rem 1rem;font-size:0.85rem;text-transform:uppercase;display:block;}
+        .nl a:hover,.nl a.active{color:#d4a017;}
+        .container{max-width:1200px;margin:0 auto;padding:0 2rem;}
+        .hero{background:linear-gradient(135deg,var(--deep),#16213e);padding:4rem 2rem;text-align:center;color:white;}
+        .hero h1{font-family:'Playfair Display',serif;font-size:2.5rem;}.hero p{color:rgba(255,255,255,0.6);margin-top:0.5rem;}
+        .gold-line{width:60px;height:3px;background:var(--gold);margin:1rem auto 0;}
+        .section{padding:3rem 0;}
+        .badge{display:inline-block;padding:0.2rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;text-transform:uppercase;}
+        .badge-gold{background:rgba(184,134,11,0.15);color:var(--gold);}
+        .badge-blue{background:rgba(26,26,46,0.1);color:var(--deep);}
+        .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;}
+        .photo-item{position:relative;aspect-ratio:1;overflow:hidden;border-radius:4px;cursor:pointer;}
+        .photo-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
+        .photo-item:hover img{transform:scale(1.05);}
+        .photo-overlay{position:absolute;inset:0;background:rgba(26,26,46,0.85);display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;opacity:0;transition:opacity 0.3s;}
+        .photo-item:hover .photo-overlay{opacity:1;}
+        .photo-overlay h4{color:white;font-size:0.95rem;margin-bottom:0.2rem;}
+        .photo-overlay p{color:rgba(255,255,255,0.7);font-size:0.8rem;}
+        #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;}
+        #lightbox.open{display:flex;}
+        #lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;}
+        #lightbox-close{position:absolute;top:1rem;right:1.5rem;color:white;font-size:2rem;cursor:pointer;background:none;border:none;}
+        #lightbox-caption{position:absolute;bottom:1.5rem;left:0;right:0;text-align:center;color:rgba(255,255,255,0.7);font-size:0.9rem;}
+        footer{background:var(--deep);color:rgba(255,255,255,0.6);padding:2rem;text-align:center;}
+        @media(max-width:600px){.nl{display:none;}}
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="nb"><span class="c">✝</span><div class="n">Holy Trinity Church<span class="s">Serving God's People</span></div></a>
+    <ul class="nl">
+        <li><a href="/">Home</a></li><li><a href="/announcements">Announcements</a></li>
+        <li><a href="/events">Events</a></li><li><a href="/gallery" class="active">Gallery</a></li>
+        <li><a href="/contact">Contact</a></li><li><a href="/admin/login">Admin ↗</a></li>
+    </ul>
+</nav>
+<div class="hero"><h1>Photo Gallery</h1><p>Memories from our parish community events</p><div class="gold-line"></div></div>
+<section class="section"><div class="container">
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;">
+        <a href="/gallery" class="badge {{ if eq .category "" }}badge-gold{{ else }}badge-blue{{ end }}" style="padding:0.4rem 1rem;text-decoration:none;">All</a>
+        {{ range slice "General" "Masses" "Baptisms" "Weddings" "Youth" "Community" "Special Events" }}
+        <a href="/gallery?category={{ . }}" class="badge {{ if eq $.category . }}badge-gold{{ else }}badge-blue{{ end }}" style="padding:0.4rem 1rem;text-decoration:none;">{{ . }}</a>
+        {{ end }}
+    </div>
+    {{ if .photos }}
+    <div class="photo-grid">
+        {{ range .photos }}
+        <div class="photo-item" onclick="openLightbox('{{ .Filepath }}','{{ .Title }}','{{ .Description }}')">
+            <img src="{{ .Filepath }}" alt="{{ .Title }}" loading="lazy">
+            <div class="photo-overlay">
+                <h4>{{ .Title }}</h4>
+                {{ if .Description }}<p>{{ truncate .Description 60 }}</p>{{ end }}
+                <span class="badge badge-gold" style="margin-top:0.4rem;font-size:0.7rem;">{{ .Category }}</span>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+    {{ else }}
+    <div style="text-align:center;padding:4rem;color:var(--muted);">
+        <div style="font-size:3rem;margin-bottom:1rem;">📷</div>
+        <p>No photos available{{ if .category }} in "{{ .category }}"{{ end }}.</p>
+    </div>
+    {{ end }}
+</div></section>
+<div id="lightbox" onclick="closeLightbox()">
+    <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="">
+    <div id="lightbox-caption"></div>
+</div>
+<footer>&copy; {{ .year }} Holy Trinity Church. All rights reserved.</footer>
+<script>
+function openLightbox(src,title,desc){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox-caption').textContent=title+(desc?' — '+desc:'');document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
+</script>
+</body></html>
+{{ end }}
