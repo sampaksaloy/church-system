@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home – Holy Trinity Church</title>
+    <title>Home – Dipolog Cathedral</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root{--gold:#b8860b;--gold-light:#d4a017;--deep:#1a1a2e;--cream:#faf8f2;--text:#2d2d2d;--muted:#7a7a7a;--white:#ffffff;--border:#e8e2d5;}
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--text);}
+        body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;}
         nav{background:var(--deep);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.4);}
         .nav-brand{display:flex;align-items:center;gap:0.8rem;text-decoration:none;padding:1rem 0;}
         .nav-brand .cross{font-size:1.6rem;color:var(--gold);}
@@ -21,37 +21,40 @@
         .container{max-width:1200px;margin:0 auto;padding:0 2rem;}
         .btn{display:inline-block;padding:0.7rem 1.8rem;border-radius:2px;font-family:'Lato',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.2s;border:2px solid transparent;cursor:pointer;}
         .btn-gold{background:var(--gold);color:white;border-color:var(--gold);}
-        .btn-gold:hover{background:var(--gold-light);}
+        .btn-gold:hover{background:var(--gold-light);transform:translateY(-1px);}
         .btn-outline{background:transparent;color:var(--gold);border-color:var(--gold);}
         .btn-outline:hover{background:var(--gold);color:white;}
-        .section{padding:4rem 0;}
-        .section-header{text-align:center;margin-bottom:3rem;}
-        .section-header h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--deep);}
-        .section-header p{color:var(--muted);margin-top:0.5rem;}
-        .gold-line{width:60px;height:3px;background:var(--gold);margin:0.8rem auto 0;}
-        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-        .card{background:white;border-radius:4px;border:1px solid var(--border);overflow:hidden;transition:box-shadow 0.2s,transform 0.2s;}
-        .card:hover{box-shadow:0 8px 30px rgba(0,0,0,0.1);transform:translateY(-2px);}
-        .card-body{padding:1.5rem;}
-        .card-title{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.8rem;color:var(--deep);}
-        .card-text{color:var(--muted);font-size:0.9rem;line-height:1.6;}
-        .badge{display:inline-block;padding:0.2rem 0.7rem;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
-        .badge-gold{background:rgba(184,134,11,0.15);color:var(--gold);border:1px solid rgba(184,134,11,0.3);}
-        footer{background:var(--deep);color:rgba(255,255,255,0.7);padding:3rem 2rem 1.5rem;}
-        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2rem;}
-        .footer-col h4{color:var(--gold-light);font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;}
-        .footer-col a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.9rem;}
+        .section{padding:5rem 0;}
+        .section-header{text-align:center;margin-bottom:3.5rem;}
+        .section-header h2{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--deep);}
+        .section-header p{color:var(--muted);margin-top:0.6rem;font-style:italic;}
+        .gold-line{width:60px;height:3px;background:var(--gold);margin:1rem auto 0;}
+        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+        .card{background:white;border-radius:4px;border:1px solid var(--border);overflow:hidden;transition:box-shadow 0.3s,transform 0.3s;display:flex;flex-direction:column;}
+        .card:hover{box-shadow:0 12px 40px rgba(0,0,0,0.12);transform:translateY(-4px);}
+        .card-body{padding:1.8rem;flex-grow:1;}
+        .card-title{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1rem;color:var(--deep);}
+        .card-text{color:var(--muted);font-size:0.95rem;line-height:1.7;}
+        .badge{display:inline-block;padding:0.25rem 0.8rem;border-radius:20px;font-size:0.7rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;}
+        .badge-gold{background:rgba(184,134,11,0.1);color:var(--gold);border:1px solid rgba(184,134,11,0.2);}
+        footer{background:var(--deep);color:rgba(255,255,255,0.7);padding:4rem 2rem 2rem;}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem;}
+        .footer-col h4{color:var(--gold-light);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;}
+        .footer-col a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.95rem;transition:color 0.2s;}
         .footer-col a:hover{color:var(--gold-light);}
         .footer-col ul{list-style:none;}
-        .footer-col ul li{margin-bottom:0.5rem;}
-        .footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:1.5rem;text-align:center;font-size:0.8rem;}
+        .footer-col ul li{margin-bottom:0.8rem;}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:2rem;text-align:center;font-size:0.85rem;letter-spacing:0.5px;}
         @media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr);}}
-        @media(max-width:600px){.grid-3{grid-template-columns:1fr;}.nav-links{display:none;}.footer-grid{grid-template-columns:1fr;}}
+        @media(max-width:600px){.grid-3{grid-template-columns:1fr;}.nav-links{display:none;}.footer-grid{grid-template-columns:1fr;gap:2.5rem;}}
     </style>
 </head>
 <body>
 <nav>
-    <a href="/" class="nav-brand"><span class="cross">✝</span><div class="name">Holy Trinity Church<span>Serving God's People</span></div></a>
+    <a href="/" class="nav-brand">
+        <span class="cross">✝</span>
+        <div class="name">Dipolog Cathedral<span>Our Lady of the Most Holy Rosary</span></div>
+    </a>
     <ul class="nav-links">
         <li><a href="/" class="active">Home</a></li>
         <li><a href="/announcements">Announcements</a></li>
@@ -62,35 +65,32 @@
     </ul>
 </nav>
 
-<!-- HERO -->
-<section style="background:linear-gradient(135deg,var(--deep) 0%,#16213e 60%,#0f3460 100%);min-height:85vh;display:flex;align-items:center;position:relative;overflow:hidden;">
-    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20rem;color:rgba(255,255,255,0.03);pointer-events:none;">✝</div>
+<section style="background:linear-gradient(135deg,var(--deep) 0%,#16213e 60%,#0f3460 100%);min-height:90vh;display:flex;align-items:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:25rem;color:rgba(255,255,255,0.02);pointer-events:none;user-select:none;">✝</div>
     <div class="container" style="text-align:center;color:white;position:relative;z-index:1;">
-        <p style="font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold-light);margin-bottom:1rem;">Welcome to</p>
-        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1;margin-bottom:1rem;">Holy Trinity Church</h1>
-        <p style="font-size:1.1rem;color:rgba(255,255,255,0.65);font-weight:300;max-width:550px;margin:0 auto 2.5rem;line-height:1.7;">A place of worship, community, and spiritual growth. Come as you are — you are always welcome.</p>
-        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-            <a href="/events" class="btn btn-gold">View Events</a>
-            <a href="/contact" class="btn btn-outline">Contact Us</a>
+        <p style="font-size:0.9rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold-light);margin-bottom:1.5rem;font-weight:400;">Welcome to the</p>
+        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5rem);line-height:1.1;margin-bottom:1.5rem;font-weight:700;">Dipolog Cathedral</h1>
+        <p style="font-size:1.2rem;color:rgba(255,255,255,0.7);font-weight:300;max-width:650px;margin:0 auto 3rem;line-height:1.8;">Established in 1896. A sanctuary of faith, historical heritage, and spiritual growth in the heart of Zamboanga del Norte.</p>
+        <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;">
+            <a href="/events" class="btn btn-gold">Upcoming Events</a>
+            <a href="/contact" class="btn btn-outline" style="color:white;border-color:white;">Plan Your Visit</a>
         </div>
     </div>
 </section>
 
-<!-- INFO BAR -->
-<div style="background:var(--gold);color:white;padding:1rem;">
-    <div class="container" style="display:flex;gap:3rem;justify-content:center;flex-wrap:wrap;font-size:0.9rem;">
-        <span>⛪ Sunday Mass: 8:00 AM &amp; 10:30 AM</span>
-        <span>📿 Weekday Mass: 6:00 AM (Mon–Sat)</span>
-        <span>☎ Confession: Saturday 4:00–5:00 PM</span>
+<div style="background:var(--gold);color:white;padding:1.2rem 0;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+    <div class="container" style="display:flex;gap:4rem;justify-content:center;flex-wrap:wrap;font-size:0.95rem;font-weight:400;letter-spacing:0.5px;">
+        <span><strong style="color:var(--deep);">⛪ Sunday Mass:</strong> 8:00 AM &amp; 10:30 AM</span>
+        <span><strong style="color:var(--deep);">📿 Weekday Mass:</strong> 6:00 AM (Mon–Sat)</span>
+        <span><strong style="color:var(--deep);">☎ Confession:</strong> Saturday 4:00 PM</span>
     </div>
 </div>
 
-<!-- ANNOUNCEMENTS -->
 <section class="section" style="background:white;">
     <div class="container">
         <div class="section-header">
             <h2>Latest Announcements</h2>
-            <p>Stay informed about church news and updates</p>
+            <p>News and updates from our parish community</p>
             <div class="gold-line"></div>
         </div>
         {{ if .announcements }}
@@ -98,97 +98,45 @@
             {{ range .announcements }}
             <div class="card">
                 <div class="card-body">
-                    <div style="margin-bottom:0.5rem;">
-                        {{ if .IsPinned }}<span style="color:var(--gold);font-size:0.8rem;font-weight:700;margin-right:0.5rem;">📌 Pinned</span>{{ end }}
+                    <div style="margin-bottom:0.8rem;display:flex;align-items:center;gap:0.8rem;">
+                        {{ if .IsPinned }}<span style="color:var(--gold);font-size:0.75rem;font-weight:700;display:flex;align-items:center;gap:3px;">📌 PINNED</span>{{ end }}
                         <span class="badge badge-gold">{{ .Category }}</span>
                     </div>
                     <h3 class="card-title"><a href="/announcements/{{ .ID }}" style="text-decoration:none;color:inherit;">{{ .Title }}</a></h3>
-                    <p class="card-text">{{ truncate .Content 120 }}</p>
-                    <div style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center;">
-                        <span style="font-size:0.8rem;color:var(--muted);">{{ formatDate .CreatedAt }}</span>
-                        <a href="/announcements/{{ .ID }}" style="font-size:0.85rem;color:var(--gold);text-decoration:none;font-weight:700;">Read more →</a>
+                    <p class="card-text">{{ truncate .Content 140 }}</p>
+                    <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:0.8rem;color:var(--muted); font-weight:700;">{{ formatDate .CreatedAt }}</span>
+                        <a href="/announcements/{{ .ID }}" style="font-size:0.85rem;color:var(--gold);text-decoration:none;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Details →</a>
                     </div>
                 </div>
             </div>
             {{ end }}
         </div>
-        <div style="text-align:center;margin-top:2rem;"><a href="/announcements" class="btn btn-outline">All Announcements</a></div>
+        <div style="text-align:center;margin-top:3.5rem;"><a href="/announcements" class="btn btn-outline">Browse All News</a></div>
         {{ else }}
-        <p style="text-align:center;color:var(--muted);">No announcements at this time.</p>
+        <div style="text-align:center;padding:3rem;background:var(--cream);border-radius:4px;">
+            <p style="color:var(--muted);">No announcements are posted at the moment.</p>
+        </div>
         {{ end }}
     </div>
 </section>
 
-<!-- EVENTS -->
-<section class="section" style="background:var(--cream);">
-    <div class="container">
-        <div class="section-header">
-            <h2>Upcoming Events</h2>
-            <p>Join us for these upcoming church activities</p>
-            <div class="gold-line"></div>
-        </div>
-        {{ if .events }}
-        <div class="grid-3">
-            {{ range .events }}
-            <div class="card">
-                <div style="background:var(--deep);padding:1.2rem;text-align:center;color:white;">
-                    <div style="font-size:1.8rem;font-family:'Playfair Display',serif;color:var(--gold-light);">{{ .EventDate.Day }}</div>
-                    <div style="font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);">{{ .EventDate.Format "Jan 2006" }}</div>
-                </div>
-                <div class="card-body">
-                    <span class="badge badge-gold" style="margin-bottom:0.5rem;">{{ .Category }}</span>
-                    <h3 class="card-title" style="margin-top:0.5rem;">{{ .Title }}</h3>
-                    {{ if .StartTime }}<p style="font-size:0.85rem;color:var(--muted);">🕐 {{ formatTime .StartTime }}</p>{{ end }}
-                    {{ if .Location }}<p style="font-size:0.85rem;color:var(--muted);">📍 {{ .Location }}</p>{{ end }}
-                </div>
-            </div>
-            {{ end }}
-        </div>
-        <div style="text-align:center;margin-top:2rem;"><a href="/events" class="btn btn-outline">Full Calendar</a></div>
-        {{ else }}
-        <p style="text-align:center;color:var(--muted);">No upcoming events.</p>
-        {{ end }}
-    </div>
-</section>
-
-<!-- GALLERY PREVIEW -->
-{{ if .photos }}
-<section class="section" style="background:var(--deep);">
-    <div class="container">
-        <div class="section-header">
-            <h2 style="color:white;">Church Life</h2>
-            <p style="color:rgba(255,255,255,0.5);">Moments from our parish community</p>
-            <div class="gold-line"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;">
-            {{ range .photos }}
-            <div style="aspect-ratio:1;overflow:hidden;cursor:pointer;" onclick="window.location='/gallery'">
-                <img src="{{ .Filepath }}" alt="{{ .Title }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-            </div>
-            {{ end }}
-        </div>
-        <div style="text-align:center;margin-top:2rem;"><a href="/gallery" class="btn btn-outline">View Gallery</a></div>
-    </div>
-</section>
-{{ end }}
-
-<!-- CTA -->
-<section style="background:var(--gold);padding:4rem 2rem;text-align:center;color:white;">
-    <h2 style="font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:0.8rem;">Have Questions?</h2>
-    <p style="margin-bottom:2rem;opacity:0.9;">We'd love to hear from you. Reach out to our church office anytime.</p>
-    <a href="/contact" style="background:white;color:var(--gold);padding:0.8rem 2.5rem;border-radius:2px;font-weight:700;text-decoration:none;letter-spacing:1px;text-transform:uppercase;font-size:0.9rem;">Contact Us</a>
+<section style="background:var(--gold);padding:5rem 2rem;text-align:center;color:white;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;margin-bottom:1rem;">Join Our Community</h2>
+    <p style="margin-bottom:2.5rem;opacity:0.9;font-size:1.1rem;max-width:600px;margin-left:auto;margin-right:auto;">Whether you are a lifelong parishioner or a first-time visitor, there is a place for you here at the Cathedral.</p>
+    <a href="/contact" style="background:var(--deep);color:white;padding:1rem 3rem;border-radius:2px;font-weight:700;text-decoration:none;letter-spacing:1.5px;text-transform:uppercase;font-size:0.9rem;transition:opacity 0.2s;">Get in Touch</a>
 </section>
 
 <footer>
     <div class="container">
         <div class="footer-grid">
             <div>
-                <div style="font-size:2rem;color:var(--gold);">✝</div>
-                <h3 style="font-family:'Playfair Display',serif;color:white;font-size:1.2rem;margin:0.5rem 0 0.3rem;">Holy Trinity Church</h3>
-                <p style="font-size:0.85rem;line-height:1.7;">A place of worship, community, and spiritual growth.</p>
+                <div style="font-size:2.2rem;color:var(--gold);margin-bottom:1rem;">✝</div>
+                <h3 style="font-family:'Playfair Display',serif;color:white;font-size:1.5rem;margin-bottom:0.8rem;">Dipolog Cathedral</h3>
+                <p style="font-size:0.95rem;line-height:1.8;max-width:300px;">The Cathedral of Our Lady of the Most Holy Rosary. A beacon of light and faith since 1896.</p>
             </div>
             <div class="footer-col">
-                <h4>Quick Links</h4>
+                <h4>Explore</h4>
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/announcements">Announcements</a></li>
@@ -199,15 +147,16 @@
             </div>
             <div class="footer-col">
                 <h4>Mass Schedule</h4>
-                <ul>
-                    <li>Sunday: 8:00 AM</li>
-                    <li>Sunday: 10:30 AM</li>
-                    <li>Weekday: 6:00 AM</li>
-                    <li>Confession: Sat 4PM</li>
+                <ul style="color:rgba(255,255,255,0.6);font-size:0.9rem;">
+                    <li style="margin-bottom:0.8rem;"><strong style="color:var(--gold-light);display:block;font-size:0.75rem;">SUNDAYS</strong> 8:00 AM &amp; 10:30 AM</li>
+                    <li style="margin-bottom:0.8rem;"><strong style="color:var(--gold-light);display:block;font-size:0.75rem;">WEEKDAYS</strong> 6:00 AM (Daily)</li>
+                    <li><strong style="color:var(--gold-light);display:block;font-size:0.75rem;">CONFESSION</strong> Saturdays at 4:00 PM</li>
                 </ul>
             </div>
         </div>
-        <div class="footer-bottom">&copy; {{ .year }} Holy Trinity Church. All rights reserved.</div>
+        <div class="footer-bottom">
+            &copy; {{ .year }} Dipolog Cathedral. Zamboanga del Norte, Philippines.
+        </div>
     </div>
 </footer>
 </body>
